@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro-exposición de silencios</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,300&family=Inter:wght@200;300;400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 3rem;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Efecto de textura sutil inspirado en las paredes de galería */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(0,0,0,0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.8rem, 3.5vw, 3rem);
+            font-weight: 300;
+            color: #444;
+            margin-bottom: 3rem;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 0.5s forwards;
+        }
+        
+        .title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ccc, transparent);
+            margin: 2rem auto 0;
+            opacity: 0.6;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 8px 16px rgba(0,0,0,0.06);
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 1s forwards;
+            background: #000;
+        }
+        
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(0,0,0,0.05));
+            border-radius: 6px;
+            z-index: -1;
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+            background: #000;
+        }
+        
+        .description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: #666;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 700px;
+            margin: 3rem auto 2rem;
+            padding: 0 1rem;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 1.5s forwards;
+            letter-spacing: 0.01em;
+        }
+        
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Loading indicator */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #999;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            z-index: 20;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading.hidden {
+            opacity: 0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
+            .title {
+                margin-bottom: 2rem;
+                font-size: clamp(1.3rem, 4.5vw, 2.2rem);
+            }
+            
+            .video-container {
+                max-width: 100%;
+                border-radius: 2px;
+                box-shadow: 
+                    0 15px 30px rgba(0,0,0,0.08),
+                    0 6px 12px rgba(0,0,0,0.04);
+            }
+            
+            .description {
+                font-size: 0.85rem;
+                margin: 2rem auto 1rem;
+                max-width: 95%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding-top: 2rem;
+            }
+            
+            .title {
+                margin-bottom: 1.5rem;
+            }
+            
+            .description {
+                font-size: 0.8rem;
+                margin: 1.5rem auto 1rem;
+                padding: 0 0.5rem;
+            }
+        }
+        
+        /* High-end devices */
+        @media (min-width: 1400px) {
+            .title {
+                font-size: 3rem;
+                margin-bottom: 4rem;
+            }
+            
+            .video-container {
+                max-width: 800px;
+            }
+            
+            .description {
+                font-size: 1rem;
+                margin: 3.5rem auto 2.5rem;
+                max-width: 750px;
+            }
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Focus states for accessibility */
+        video:focus {
+            outline: 2px solid rgba(0,0,0,0.1);
+            outline-offset: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Al servicio de la sociedad</h1>
+        
+        <div class="video-container">
+            <div class="loading" id="loading">Cargando...</div>
+            <video 
+                id="mainVideo"
+                controls
+                loop 
+                playsinline
+                preload="auto"
+                oncanplay="hideLoading()"
+                onerror="handleVideoError()"
+            >
+                <source src="ayer-hoy.mp4" type="video/mp4">
+                <source src="ayer-hoy.webm" type="video/webm">
+                <p>Tu navegador no soporta el elemento de video. <a href="ayer-hoy.mp4">Descargar el video</a>.</p>
+            </video>
+        </div>
+        
+        <p class="description">
+            Ayer y Hoy. Serenidad que se atesorado a lo largo de los siglos, legado a legado, aportando a la sociedad: servicio constante a los demás, al arte y a la cultura. Nuevos canales, nuevas formas de expresión, nueva manera de aproximar talentos e iniciativas. Nuevos tiempos, idéntica responsabilidad.
+        </p>
+    </div>
+
+    <script>
+        // Función para ocultar el indicador de carga
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.classList.add('hidden');
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                }, 500);
+            }
+        }
+        
+        // Manejo de errores de video
+        function handleVideoError() {
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.textContent = 'Error al cargar el video';
+                loading.style.color = '#999';
+            }
+        }
+
+        // El script de autoplay forzado se ha eliminado, ya que ahora el video tiene controles
+        // y el sonido está activado, por lo que el navegador bloquearía la reproducción automática.
+        // La carga del video es manejada por los eventos 'oncanplay' en la etiqueta de video.
+    </script>
+</body>
+</html>
